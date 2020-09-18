@@ -8,56 +8,40 @@ Tree-sitter integration					*treesitter*
 
                                       Type |gO| to see the table of contents.
 
-------------------------------------------------------------------------------
-VIM.TREESITTER						*lua-treesitter*
 
-Nvim integrates the tree-sitter library for incremental parsing of buffers.
+==============================================================================
+Lua module: vim.treesitter.language                      *treesitter-language*
 
-Currently Nvim does not provide the tree-sitter parsers, instead these must
-be built separately, for instance using the tree-sitter utility. The only
-exception is a C parser being included in official builds for testing
-purposes. Parsers are searched for as `parser/{lang}.*` in any 'runtimepath'
-directory. A parser can also be loaded manually using a full path: >
+inspect_language({lang})          *vim.treesitter.language.inspect_language()*
+                TODO: Documentation
 
-    vim.treesitter.require_language("python", "/path/to/python.so")
+                                  *vim.treesitter.language.require_language()*
+require_language({lang}, {path})
+                TODO: Documentation
 
-<Create a parser for a buffer and a given language (if another plugin uses the
-same buffer/language combination, it will be safely reused). Use >
 
-    parser = vim.treesitter.get_parser(bufnr, lang)
+==============================================================================
+Lua module: vim.treesitter.query                            *treesitter-query*
 
-<`bufnr=0` can be used for current buffer. `lang` will default to 'filetype'  (this
-doesn't work yet for some filetypes like "cpp") Currently, the parser will be
-retained for the lifetime of a buffer but this is subject to change. A plugin
-should keep a reference to the parser object as long as it wants incremental
-updates.
+check_magic({str})                        *vim.treesitter.query.check_magic()*
+                TODO: Documentation
 
-Parser files						*treesitter-parsers*
+get_node_text({node}, {bufnr})          *vim.treesitter.query.get_node_text()*
+                TODO: Documentation
 
-Parsers are the heart of tree-sitter. They are libraries that tree-sitter will
-search for in the `parser` runtime directory.
+parse_query({lang}, {query})              *vim.treesitter.query.parse_query()*
+                TODO: Documentation
 
-For a parser to be available for a given language, there must be a file named
-`{lang}.so` within the parser directory.
+xor({x}, {y})                                     *vim.treesitter.query.xor()*
+                TODO: Documentation
 
-Parser methods						*lua-treesitter-parser*
 
-tsparser:parse()					*tsparser:parse()*
-Whenever you need to access the current syntax tree, parse the buffer: >
+==============================================================================
+Lua module: vim.treesitter.highlighter                *treesitter-highlighter*
 
-    tstree = parser:parse()
-
-<This will return an immutable tree that represents the current state of the
-buffer. When the plugin wants to access the state after a (possible) edit
-it should call `parse()` again. If the buffer wasn't edited, the same tree will
-be returned again without extra work. If the buffer was parsed before,
-incremental parsing will be done of the changed parts.
-
-NB: to use the parser directly inside a |nvim_buf_attach| Lua callback, you must
-call `get_parser()` before you register your callback. But preferably parsing
-shouldn't be done directly in the change callback anyway as they will be very
-frequent. Rather a plugin that does any kind of analysis on a tree should use
-a timer to throttle too frequent updates.
+                              *vim.treesitter.highlighter.is_highlight_name()*
+is_highlight_name({capture_name})
+                TODO: Documentation
 
 tsparser:set_included_ranges({ranges})			*tsparser:set_included_ranges()*
 	Changes the ranges the parser should consider. This is used for
