@@ -1,0 +1,22 @@
+name: Build
+
+on: [push, pull_request]
+
+jobs:
+  luacheck:
+    name: Build
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v1
+
+      - name: Prepare
+        run: |
+          sudo apt-get update
+          sudo add-apt-repository universe
+          sudo apt-get install -y ninja-build gettext libtool libtool-bin autoconf automake cmake g++ pkg-config unzip
+
+      - name: Build and test
+        run: |
+          make
+          make test
+          make oldtest
